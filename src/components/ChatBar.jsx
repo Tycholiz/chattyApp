@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 
+class ChatBar extends Component {
+  render() {
+    return (
+      <footer className="chatbar">
+        <Username currentUser={this.props.currentUser} />
+        <Message />
+      </footer>
+    );
+  }
+}
+
 class Username extends Component {
   render() {
     return (
-      <input className="chatbar-username" placeholder="Your Name (Optional)"/>
+      <input className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={this.props.currentUser}/>
     );
   }
 }
@@ -16,16 +27,6 @@ class Message extends Component {
   }
 }
 
-class ChatBar extends Component {
-  render() {
-    return (
-      <footer className="chatbar">
-        <Username />
-        <Message />
-      </footer>
-    );
-  }
-}
 
 
 export default ChatBar;
