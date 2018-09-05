@@ -4,17 +4,29 @@ class ChatBar extends Component {
   render() {
     return (
       <footer className="chatbar">
-        <Username currentUser={this.props.currentUser.name} />
-        <Message addNewMessage={this.props.addNewMessage} />
+        <Username currentUser={this.props.currentUser.name} switchCurrentUser={this.props.switchCurrentUser} />
+        <Message handleNewMessage={this.props.handleNewMessage} />
       </footer>
     );
   }
 }
 
 class Username extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+    };
+  }
+
+  updateCurrentUser = (e) => {
+    const usernameInput = e.target.value;
+    this.props.switchCurrentUser(usernameInput);
+  }
+
   render() {
     return (
-      <input className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={this.props.currentUser}/>
+      <input name="user" className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={this.props.currentUser} value={this.state.currentUser} onChange={this.updateCurrentUser}/>
     );
   }
 }
@@ -23,10 +35,11 @@ class Message extends Component {
   constructor(props) {
     super(props);
   }
+  
   submitMessage = (e) => {
     e.preventDefault();
     const userInput = e.target.elements.newMessage.value
-    this.props.addNewMessage(userInput)
+    this.props.handleNewMessage(userInput)
     e.target.elements.newMessage.value = '';
   }
   

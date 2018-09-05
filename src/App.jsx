@@ -23,7 +23,7 @@ class App extends Component {
       ]
     }
   }
-  addNewMessage = (content) => {
+  handleNewMessage = (content) => {
     this.setState((prevState) => {
       return {
         messages: prevState.messages.concat({
@@ -33,6 +33,9 @@ class App extends Component {
         })
       }
     })
+  }
+  switchCurrentUser = (newCurrentUser) => {
+    this.setState({currentUser: {name: newCurrentUser}})
   }
 
   componentDidMount() {
@@ -53,7 +56,9 @@ class App extends Component {
       <main>
         <NavBar />
         <MessageList messages={this.state.messages} />
-        <ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage} />
+        <ChatBar currentUser={this.state.currentUser} 
+        handleNewMessage={this.handleNewMessage} 
+        switchCurrentUser={this.switchCurrentUser}/>
       </main>
     );
   }
