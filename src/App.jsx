@@ -10,32 +10,21 @@ class App extends Component {
       currentUser: {
         name: 'Bob'
       },
-      messages: [
-        {
-          id: 1,
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          id: 2,
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good.",
-        }
-      ]
-    }
+      messages: []
+    };
   }
   handleNewMessage = (content) => {
     const prevState = this.state;
     const newMessage = {
-      id: prevState.messages[prevState.messages.length - 1].id + 1,
+      // id: prevState.messages[prevState.messages.length - 1].id + 1,
       username: prevState.currentUser.name,
       content: content
     }
-    this.setState((prevState) => {
-      return {
-        messages: prevState.messages.concat(newMessage)
-      }
-    });
+    // this.setState((prevState) => {
+    //   return {
+    //     messages: prevState.messages.concat(newMessage)
+    //   }
+    // });
     socket.send(JSON.stringify(newMessage));
     
   }
@@ -44,9 +33,17 @@ class App extends Component {
   }
 
   componentDidMount() {
+    socket.onmessage = (event) => {
+      const messages = this.state.messages
+      const newMessage = JSON.parse(event.data)
+      const newMessages = messages.concat(newMessage);
+      this.setState({messages: newMessages})
+      console.log("hello", this.state.messages)
+    }
+
     setTimeout(() => {
       // Add a new message to the list of messages in the data store
-      const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
+      const newMessage = {username: "Michelle", content: "Hello there!", id: "e7257000-b15f-11e8-9a01-5945386ce9ee"};
       const messages = this.state.messages.concat(newMessage)
       // Update the state of the app component.
       // Calling setState will trigger a call to render() in App and all child components.
