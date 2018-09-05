@@ -38,7 +38,7 @@ class Message extends Component {
   
   submitMessage = (e) => {
     e.preventDefault();
-    const userInput = e.target.elements.newMessage.value
+    const userInput = e.target.elements.newMessage.value;
     this.props.handleNewMessage(userInput)
     e.target.elements.newMessage.value = '';
   }

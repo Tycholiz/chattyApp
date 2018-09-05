@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ChatBar from './components/ChatBar.jsx';
 import MessageList from './components/MessageList.jsx';
+const socket = new WebSocket(`ws://localhost:3001`)
 
 class App extends Component {
   constructor(props) {
@@ -24,24 +25,26 @@ class App extends Component {
     }
   }
   handleNewMessage = (content) => {
+    const prevState = this.state;
+    const newMessage = {
+      id: prevState.messages[prevState.messages.length - 1].id + 1,
+      username: prevState.currentUser.name,
+      content: content
+    }
     this.setState((prevState) => {
       return {
-        messages: prevState.messages.concat({
-          id: prevState.messages[prevState.messages.length - 1].id + 1,
-          username: prevState.currentUser.name,
-          content: content
-        })
+        messages: prevState.messages.concat(newMessage)
       }
-    })
+    });
+    socket.send(JSON.stringify(newMessage));
+    
   }
   switchCurrentUser = (newCurrentUser) => {
     this.setState({currentUser: {name: newCurrentUser}})
   }
 
   componentDidMount() {
-    console.log("componentDidMount <App />");
     setTimeout(() => {
-      console.log("Simulating incoming message");
       // Add a new message to the list of messages in the data store
       const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
       const messages = this.state.messages.concat(newMessage)
