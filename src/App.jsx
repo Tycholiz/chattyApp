@@ -8,7 +8,7 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: {
-        name: 'Bob'
+        name: 'Kyle'
       },
       messages: []
     };
@@ -71,6 +71,5 @@ function NavBar() {
     </nav>
   )
 }
-
 
 export default App;

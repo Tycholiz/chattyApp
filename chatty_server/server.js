@@ -7,9 +7,7 @@ const server = express()
   .use(express.static('public'))
   .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 
-
 const wss = new SocketServer({ server });
-
 wss.broadcast = (data) => {
   wss.clients.forEach(client => {
     if (client.readyState) {
@@ -17,7 +15,6 @@ wss.broadcast = (data) => {
     }
   })
 }
-
 
 wss.on('connection', (ws) => {            //wss instance of a websocket server. wss is our server
   console.log('Client connected');
@@ -27,9 +24,8 @@ wss.on('connection', (ws) => {            //wss instance of a websocket server. 
       ...message,
       id: uuid()
     };
+
     wss.broadcast(JSON.stringify(dataToBeBroadcasted))
-    console.log(dataToBeBroadcasted)
-    console.log(SocketServer.OPEN)
   })
   ws.on('close', () => console.log('Client disconnected'));
 });
