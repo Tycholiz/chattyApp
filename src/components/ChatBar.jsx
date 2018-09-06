@@ -21,7 +21,7 @@ class Username extends Component {
 
   updateCurrentUser = (e) => {
     e.preventDefault();
-    const usernameInput = e.target.value;
+    const usernameInput = e.target.elements.user.value;
     this.props.switchCurrentUser(usernameInput);
   }
 
@@ -42,8 +42,11 @@ class Message extends Component {
   submitMessage = (e) => {
     e.preventDefault();
     const userInput = e.target.elements.newMessage.value;
-    this.props.handleNewMessage(userInput)
-    e.target.elements.newMessage.value = '';
+    if (userInput.length > 0) {
+      this.props.handleNewMessage(userInput)
+      e.target.elements.newMessage.value = '';
+
+    }
   }
   
   render() {

@@ -24,20 +24,21 @@ class App extends Component {
   }
 
   switchCurrentUser = (newCurrentUser) => {
+    const currentUser = this.state.currentUser.name;
     const notificationObject = {
       type: "postNotification", 
-      content: "UserA has changed their name to UserB."
+      content: `${currentUser} has changed their name to ${newCurrentUser}.`
     }
     const newMessages = this.state.messages;
-    // newMessages.push(notificationObject);
+    socket.send(JSON.stringify(notificationObject));   //DOES THIS UPDATE STATE? DO I NEED LINE 39?
   
     this.setState({
       currentUser: {
         name: newCurrentUser
       },
-      messages: newMessages.concat(notificationObject)
-
+      // messages: newMessages.concat(notificationObject)
     })
+
   }
   componentDidMount() {
     console.log("componentDidMount <App />");
@@ -52,6 +53,8 @@ class App extends Component {
         case "incomingNotification":
 
           break;
+        default:
+          throw new Error("Unknown event type " + newData.type);
       }
       this.setState({messages: newMessages})
     }
