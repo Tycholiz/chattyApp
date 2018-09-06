@@ -19,12 +19,14 @@ wss.broadcast = (data) => {
 wss.on('connection', (ws) => {            //wss instance of a websocket server. wss is our server
   console.log('Client connected');
   ws.on('message', function incoming(event) {      //ws is the connection to a single client
+    const typeOfData = "";
     const message = JSON.parse(event);
     const dataToBeBroadcasted = {
       ...message,
-      id: uuid()
+      id: uuid(),
+      type: "incomingMessage"
     };
-
+    console.log(dataToBeBroadcasted)
     wss.broadcast(JSON.stringify(dataToBeBroadcasted))
   })
   ws.on('close', () => console.log('Client disconnected'));

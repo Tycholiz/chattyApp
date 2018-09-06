@@ -16,29 +16,44 @@ class App extends Component {
   handleNewMessage = (content) => {
     const prevState = this.state;
     const newMessage = {
-      // id: prevState.messages[prevState.messages.length - 1].id + 1,
+      type: "postMessage",
       username: prevState.currentUser.name,
       content: content
     }
-    // this.setState((prevState) => {
-    //   return {
-    //     messages: prevState.messages.concat(newMessage)
-    //   }
-    // });
     socket.send(JSON.stringify(newMessage));
-    
-  }
-  switchCurrentUser = (newCurrentUser) => {
-    this.setState({currentUser: {name: newCurrentUser}})
   }
 
+  switchCurrentUser = (newCurrentUser) => {
+    const notificationObject = {
+      type: "postNotification", 
+      content: "UserA has changed their name to UserB."
+    }
+    const newMessages = this.state.messages;
+    // newMessages.push(notificationObject);
+  
+    this.setState({
+      currentUser: {
+        name: newCurrentUser
+      },
+      messages: newMessages.concat(notificationObject)
+
+    })
+  }
   componentDidMount() {
+    console.log("componentDidMount <App />");
     socket.onmessage = (event) => {
       const messages = this.state.messages
-      const newMessage = JSON.parse(event.data)
-      const newMessages = messages.concat(newMessage);
+      const newData = JSON.parse(event.data)
+      const newMessages = messages.concat(newData);
+      switch(newData.type) {
+        case "incomingMessage":
+
+          break;
+        case "incomingNotification":
+
+          break;
+      }
       this.setState({messages: newMessages})
-      console.log("hello", this.state.messages)
     }
 
     setTimeout(() => {

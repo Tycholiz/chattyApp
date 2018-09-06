@@ -20,13 +20,16 @@ class Username extends Component {
   }
 
   updateCurrentUser = (e) => {
+    e.preventDefault();
     const usernameInput = e.target.value;
     this.props.switchCurrentUser(usernameInput);
   }
 
   render() {
     return (
-      <input name="user" className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={this.props.currentUser} value={this.state.currentUser} onChange={this.updateCurrentUser}/>
+      <form onSubmit={this.updateCurrentUser}>
+        <input name="user" className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={this.props.currentUser} value={this.state.currentUser} />
+      </form>
     );
   }
 }
