@@ -7,7 +7,7 @@ class MessageList extends Component {
     const messages = this.props.messages.map((message, index) => {
       if (message.type === "incomingMessage") {
         return <Message username={message.username} content={message.content} key={message.id} />
-      } else {
+      } else if (message.type === "incomingNotification") {
         return (
         <div className="message system" key={index}>
           {message.content}

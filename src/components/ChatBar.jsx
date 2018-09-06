@@ -45,7 +45,6 @@ class Message extends Component {
     if (userInput.length > 0) {
       this.props.handleNewMessage(userInput)
       e.target.elements.newMessage.value = '';
-
     }
   }
   
