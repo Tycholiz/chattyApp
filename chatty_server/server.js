@@ -10,14 +10,16 @@ const server = express()
 const wss = new SocketServer({ server });
 wss.broadcast = (data) => {
   wss.clients.forEach(client => {
-    if (client.readyState) {
+    if (client.readyState === 1) {  //1 is open?
       client.send(data);
     }
   })
 }
-
+let numberConnectedUsers = 0;
 wss.on('connection', (ws) => {            //wss instance of a websocket server. wss is our server
   console.log('Client connected');
+  numberConnectedUsers++;
+  wss.broadcast(numberConnectedUsers)
   ws.on('message', function incoming(event) {      //ws is the connection to a single client
     const message = JSON.parse(event);
     let typeOfData = "";
@@ -33,5 +35,9 @@ wss.on('connection', (ws) => {            //wss instance of a websocket server. 
     };
     wss.broadcast(JSON.stringify(dataToBeBroadcasted))
   })
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    numberConnectedUsers--;
+    wss.broadcast(numberConnectedUsers)
+  })
 });

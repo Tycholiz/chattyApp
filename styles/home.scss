@@ -31,6 +31,13 @@ body {
             padding: 0 10px;
             text-decoration: none;
         }
+        .users-online {
+            float: right;
+            font-size: 1.35em;
+            padding-top: 18px;
+            padding-right: 15px;
+            color: white;
+        }
     }
     .message {
         display: flex;

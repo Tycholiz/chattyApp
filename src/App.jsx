@@ -43,30 +43,20 @@ class App extends Component {
   componentDidMount() {
     console.log("componentDidMount <App />");
     socket.onmessage = (event) => {
+      console.log("event.data", event.data);
       const messages = this.state.messages
       const newData = JSON.parse(event.data)
       const newMessages = messages.concat(newData);
-      switch(newData.type) {
-        case "incomingMessage":
-
-          break;
-        case "incomingNotification":
-
-          break;
-        default:
-          throw new Error("Unknown event type " + newData.type);
-      }
       this.setState({messages: newMessages})
     }
 
-    setTimeout(() => {
-      // Add a new message to the list of messages in the data store
-      const newMessage = {username: "Michelle", content: "Hello there!", id: "e7257000-b15f-11e8-9a01-5945386ce9ee"};
-      const messages = this.state.messages.concat(newMessage)
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      this.setState({messages: messages})
-    }, 3000);
+    // setTimeout(() => {
+    //   const newMessage = {username: "Michelle", content: "Hello there!", id: "e7257000-b15f-11e8-9a01-5945386ce9ee"};
+    //   const messages = this.state.messages.concat(newMessage)
+    //   // Update the state of the app component.
+    //   // Calling setState will trigger a call to render() in App and all child components.
+    //   this.setState({messages: messages})
+    // }, 3000);
   }
 
   render() {
@@ -86,6 +76,7 @@ function NavBar() {
   return (
     <nav className="navbar">
       <a href="/" className="navbar-brand">Chatty</a>
+      <span className="users-online">1 users online</span>
     </nav>
   )
 }
