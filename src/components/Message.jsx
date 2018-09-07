@@ -6,7 +6,6 @@ class Message extends Component {
     const spanStyle = {
       color: this.props.message.color
     };
-    console.log(this.props.message)
     return (
       <div className="message">
         <span className="message-username" style={spanStyle} >{this.props.message.username}</span>

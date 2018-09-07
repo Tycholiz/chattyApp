@@ -1,6 +1,8 @@
 const express = require('express');
 const SocketServer = require('ws').Server;
 const uuid = require('uuid/v1');
+const allUserColors = require('./userColors.js')
+const userColors = allUserColors.colors
 const PORT = 3001;
 
 const server = express()
@@ -26,7 +28,6 @@ function announceClientCount() {
   wss.broadcast(JSON.stringify(dataToBeBroadcasted))
 }
 
-const userColors = ['red', 'green', 'blue', 'rebeccapurple', 'black', 'maroon'];
 function assignUserColor(ws) {
   const colorIndex = Math.floor(Math.random() * ((userColors.length - 1) + 1));
   const userColor = userColors[colorIndex];
