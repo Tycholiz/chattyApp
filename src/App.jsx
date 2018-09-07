@@ -8,7 +8,8 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: {
-        name: 'Kyle'
+        name: 'Kyle',
+        color: 'grey'
       },
       messages: [],
       userCount: 0
@@ -31,7 +32,7 @@ class App extends Component {
       content: `${currentUser} has changed their name to ${newCurrentUser}.`
     }
     const newMessages = this.state.messages;
-    socket.send(JSON.stringify(notificationObject));   //DOES THIS UPDATE STATE? DO I NEED LINE 39?
+    socket.send(JSON.stringify(notificationObject));   //DOES THIS UPDATE STATE? DO I NEED LINE 40?
   
     this.setState({
       currentUser: {
@@ -43,18 +44,25 @@ class App extends Component {
   }
   componentDidMount() {
     console.log("componentDidMount <App />");
-    socket.onmessage = (event) => {
+    socket.onmessage = (event) => { //this is where the data incoming from the server gets routed toward where it needs to go depending on what its "type" property is
       const messages = this.state.messages
       const newData = JSON.parse(event.data)
       if (newData.type === "userCount") {
         this.setState({userCount: newData.userCount })
-      } else {
-        
+      } else if (newData.type === "incomingMessage" || newData.type === "incomingNotification") {
         const newMessages = messages.concat(newData);
         this.setState({messages: newMessages})
+      } else if (newData.type === "userColor") {
+        this.setState({
+          currentUser: {
+            color: newData.userColor,
+            name: this.state.currentUser.name
+
+          }});
+      } else {
+        console.error("data type coming from server does not exist");
       }
     }
-
     setTimeout(() => {
       const newMessage = {username: "Michelle", content: "Hello there!", id: "e7257000-b15f-11e8-9a01-5945386ce9ee"};
       const messages = this.state.messages.concat(newMessage)
@@ -65,10 +73,11 @@ class App extends Component {
   }
 
   render() {
+    console.log("#####", this.state)
     return (
       <main>
         <NavBar userCount={this.state.userCount} />
-        <MessageList messages={this.state.messages} />
+        <MessageList messages={this.state.messages} userColor={this.state.currentUser.color} userName={this.state.currentUser.name} />
         <ChatBar currentUser={this.state.currentUser} 
         handleNewMessage={this.handleNewMessage} 
         switchCurrentUser={this.switchCurrentUser}/>
@@ -83,7 +92,7 @@ class NavBar extends Component {
     return (
       <nav className="navbar">
         <a href="/" className="navbar-brand">Chatty</a>
-        <span className="users-online">{`${this.props.userCount} users connected`}</span>
+        <span className="users-online">{`${this.props.userCount} user(s) connected`}</span>
       </nav>
     )
   }
