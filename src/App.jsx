@@ -33,7 +33,7 @@ class App extends Component {
       content: `${currentUser} has changed their name to ${newCurrentUser}.`
     }
     const newMessages = this.state.messages;
-    socket.send(JSON.stringify(notificationObject));   //DOES THIS UPDATE STATE? DO I NEED LINE 40?
+    socket.send(JSON.stringify(notificationObject));   //DOES THIS UPDATE STATE? DO I NEED LINE 43?
   
     this.setState(prevState => ({
       currentUser: {
@@ -51,7 +51,8 @@ class App extends Component {
       const newData = JSON.parse(event.data)
       if (newData.type === "userCount") {
         this.setState({userCount: newData.userCount })
-      } else if (newData.type === "incomingMessage" || newData.type === "incomingNotification") {
+      } else if (newData.type === "incomingMessage" 
+        || newData.type === "incomingNotification") {
         const newMessages = messages.concat(newData);
         this.setState({messages: newMessages})
       } else if (newData.type === "userColor") {
