@@ -16,11 +16,12 @@ class App extends Component {
     };
   }
   handleNewMessage = (content) => {
-    const prevState = this.state;
+    const currentState = this.state;
     const newMessage = {
       type: "postMessage",
-      username: prevState.currentUser.name,
-      content: content
+      username: currentState.currentUser.name,
+      content: content,
+      color: currentState.currentUser.color
     }
     socket.send(JSON.stringify(newMessage));
   }
@@ -34,12 +35,13 @@ class App extends Component {
     const newMessages = this.state.messages;
     socket.send(JSON.stringify(notificationObject));   //DOES THIS UPDATE STATE? DO I NEED LINE 40?
   
-    this.setState({
+    this.setState(prevState => ({
       currentUser: {
+        ...prevState.currentUser,
         name: newCurrentUser
       },
       // messages: newMessages.concat(notificationObject)
-    })
+    }));
 
   }
   componentDidMount() {
@@ -53,12 +55,12 @@ class App extends Component {
         const newMessages = messages.concat(newData);
         this.setState({messages: newMessages})
       } else if (newData.type === "userColor") {
-        this.setState({
+        this.setState(prevState => ({
           currentUser: {
-            color: newData.userColor,
-            name: this.state.currentUser.name
-
-          }});
+            ...prevState.currentUser,
+            color: newData.userColor            
+          }
+        }));
       } else {
         console.error("data type coming from server does not exist");
       }

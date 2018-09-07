@@ -27,21 +27,20 @@ function announceClientCount() {
 }
 
 const userColors = ['red', 'green', 'blue', 'rebeccapurple', 'black', 'maroon'];
-function assignUserColor() {
+function assignUserColor(ws) {
   const colorIndex = Math.floor(Math.random() * ((userColors.length - 1) + 1));
   const userColor = userColors[colorIndex];
-  const dataToBeBroadcasted = {
+  const colorToBePassed = {
     userColor: userColor,
     type: "userColor"
   };
-  wss.broadcast(JSON.stringify(dataToBeBroadcasted))
+  ws.send(JSON.stringify(colorToBePassed))
 }
 
 wss.on('connection', (ws) => {                     //wss instance of a websocket server. wss is our server
   console.log('Client connected');
-
   announceClientCount();
-  assignUserColor();
+  assignUserColor(ws);
   ws.on('message', function incoming(event) {      //ws is the connection to a single client. we can see this because if we console log wss, it will show the data for all the connected users, whereas if we console log ws, we will see data for a single user
     const message = JSON.parse(event);
     let dataToBeBroadcasted = {};
