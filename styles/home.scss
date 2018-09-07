@@ -57,6 +57,9 @@ body {
             flex: 2;
             font-weight: 700;
         }
+        img {
+            max-width: 60%;
+        }
     }
     
     .message.system {
