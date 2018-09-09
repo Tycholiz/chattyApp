@@ -2,6 +2,8 @@ React Boilerplate
 =====================
 
 A minimal and light dev environment for ReactJS.
+##Screenshots
+!["ChattyApp"](https://github.com/Tycholiz/chattyApp/blob/refactoring/docs/pic.png?raw=true)
 
 ### Usage
 
