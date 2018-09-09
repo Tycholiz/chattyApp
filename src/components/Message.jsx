@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
-
+const functionsModule = require('./functions.js')
+const hasImgExtension = functionsModule.hasImgExtension
 
 class Message extends Component {
   render() {
     const spanStyle = {
       color: this.props.message.color
     };
-
-    function hasImgExtension(imgLink) {
-      const extension = imgLink.slice(imgLink.length - 4) ;
-      if (extension === '.jpg' || extension === ".png" || extension === ".gif" || extension === "jpeg") {
-        return true;
-      }
-      return false;
-    }
 
     let content = "";
     if (hasImgExtension(this.props.message.content)) {

@@ -76,7 +76,6 @@ class App extends Component {
   }
 
   render() {
-    console.log("#####", this.state)
     return (
       <main>
         <NavBar userCount={this.state.userCount} />
